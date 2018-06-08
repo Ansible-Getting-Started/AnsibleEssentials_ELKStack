@@ -1,0 +1,10 @@
+---
+- hosts: demo2
+  remote_user: ubuntu
+  become: yes
+  become_user: root
+  roles:
+  - java
+  - elasticsearch
+  - kibana
+  - metricbeat

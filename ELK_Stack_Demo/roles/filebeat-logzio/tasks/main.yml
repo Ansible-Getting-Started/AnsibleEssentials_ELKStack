@@ -1,0 +1,24 @@
+---
+- name: Download certificate
+  shell: wget https://raw.githubusercontent.com/logzio/public-certificates/master/COMODORSADomainValidationSecureServerCA.crt
+
+- name: Make new directory for cert
+  shell: mkdir -p /etc/pki/tls/certs
+
+- name: Move SSL certification to new folder
+  shell: cp COMODORSADomainValidationSecureServerCA.crt /etc/pki/tls/certs/
+
+- name: Install Filebeat with apt
+  apt:
+    name: filebeat
+    update_cache: yes
+
+- name: Replace default filebeat.yml configurations
+  template:
+    src: filebeat.yml.j2
+    dest: /etc/filebeat/filebeat.yml
+
+- name: Starting Filebeat
+  service:
+    name: filebeat
+    state: started
